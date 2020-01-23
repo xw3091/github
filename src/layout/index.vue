@@ -7,7 +7,7 @@
         </el-header>
         <el-container>
           <!-- 侧边栏 -->
-          <el-aside>
+          <el-aside v-if="!isMobile">
             <nav-aside></nav-aside>
           </el-aside>
           <el-container>
@@ -31,7 +31,8 @@ export default {
   name: 'layout',
   data() {
     return {
-      height: 800
+      height: 800,
+      isMobile: false
     }
   },
   computed: {
@@ -44,6 +45,9 @@ export default {
     NavFooter: () => import('./navFooter'),
     NavAside: () => import('./navAside')
   },
+  created() {
+    this.navigatorInfo()
+  },
   mounted() {
     this.handleHeight()
   },
@@ -51,6 +55,13 @@ export default {
     handleHeight() {
       let innerHeight = document.body.clientHeight
       this.height = innerHeight - 121
+    },
+    navigatorInfo() {
+      if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {
+        this.isMobile = true
+      } else {
+        this.isMobile = false
+      }
     }
   }
 }
